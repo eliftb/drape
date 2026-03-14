@@ -1,0 +1,13 @@
+/* public/styles/animations.css */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes scanMove{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes clothWave{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+.anim-fade-up{animation:fadeUp .5s ease both}
+.anim-float{animation:float 3.5s ease-in-out infinite}
+.anim-spin{animation:spin .7s linear infinite}
