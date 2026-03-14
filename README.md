@@ -18,69 +18,69 @@
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-Pose-4285F4?style=flat-square&logo=google&logoColor=white)](https://mediapipe.dev)
 [![License](https://img.shields.io/badge/License-MIT-8B5CF6?style=flat-square)](LICENSE)
 
-[Demo](#demo) · [Özellikler](#özellikler) · [Kurulum](#kurulum) · [Mimari](#mimari) · [API](#api)
+[Features](#features) · [How It Works](#how-it-works) · [Setup](#setup) · [Architecture](#architecture) · [API](#api)
 
 </div>
 
 ---
 
-## Ne Yapar?
+## What is DRAPE?
 
-Kıyafet fotoğrafı yükle → AI arka planı kaldırsın → vücudunu algılasın → kıyafeti gerçek zamanlı üzerine oturtsun → yüz ifadenle beğenip beğenmediğini ölçsün.
+Upload a clothing photo → AI removes the background → detects your body in real time → overlays the garment on you → measures whether you like it from your facial expression.
 
 ```
-📸 Fotoğraf yükle
+📸 Upload photo
      ↓
-✂️  remove.bg → Arka plan kaldırılır, şeffaf PNG oluşur
+✂️  remove.bg → Background removed, transparent PNG created
      ↓
-🤖  Claude Vision → Kategori, renk, stil, sezon analizi
+🤖  Claude Vision → Category, color, style, season analysis
      ↓
-👗  Dijital dolap → Kıyafet kaydedilir
+👗  Digital wardrobe → Garment saved
      ↓
-📷  MediaPipe Pose → 33 vücut noktası gerçek zamanlı takip
+📷  MediaPipe Pose → 33 body landmarks tracked in real time
      ↓
-🎭  Body Segmentation → Kıyafet sadece vücut piksellerine işlenir
+🎭  Body Segmentation → Garment rendered only on body pixels
      ↓
-😊  face-api.js → Yüz ifadesinden beğeni skoru hesaplanır
+😊  face-api.js → Like score calculated from facial expression
 ```
 
 ---
 
-## Özellikler
+## Features
 
-### 🤖 Claude Vision ile Akıllı Analiz
-Kıyafet fotoğrafı yüklendiğinde Claude Sonnet görüntüyü analiz eder ve otomatik olarak tespit eder:
-- **Kategori** — Üst giysi, alt giysi, dış giyim, ayakkabı, aksesuar
-- **Renk tonu** — Koyu, açık, nötr, renkli + hex kodları
-- **Stil** — Streetwear, Minimalist, Business, Casual, Formal, Vintage
-- **Sezon** — Yaz, kış, ilkbahar, sonbahar, 4 mevsim
-- **Malzeme ve desen** — Pamuk, deri, çizgili, düz, ekose...
+### 🤖 Smart Analysis with Claude Vision
+When a clothing photo is uploaded, Claude Sonnet analyzes the image and automatically detects:
+- **Category** — Top, bottom, outerwear, shoes, accessory
+- **Color tone** — Dark, light, neutral, colorful + hex codes
+- **Style** — Streetwear, Minimalist, Business, Casual, Formal, Vintage
+- **Season** — Summer, winter, spring, autumn, all-season
+- **Material & pattern** — Cotton, leather, striped, solid, plaid...
 
-### ✂️ AI Arka Plan Kaldırma
-remove.bg API ile profesyonel kalitede arka plan kaldırma. Kıyafet şeffaf PNG'ye dönüştürülerek AR deneme için hazır hale gelir.
+### ✂️ AI Background Removal
+Professional quality background removal via remove.bg API. The garment is converted to a transparent PNG, ready for AR try-on.
 
-### 📷 Gerçek Zamanlı AR Deneme Odası
-MediaPipe Pose modeli ile:
-- **33 vücut noktası** gerçek zamanlı takip edilir
-- Kıyafet omuz, kalça ve ayak bileği noktalarına göre konumlandırılır
-- **Body Segmentation** ile kıyafet sadece vücut piksellerine işlenir — arka plana taşmaz
-- Vücudun hareketiyle birlikte kıyafet de hareket eder
+### 📷 Real-Time AR Try-On Room
+Using MediaPipe Pose model:
+- **33 body landmarks** tracked in real time
+- Garment is positioned according to shoulder, hip and ankle points
+- **Body Segmentation** ensures the garment only renders on body pixels — no bleeding into the background
+- Garment moves with your body
 
-### 😊 Duygu Algılama ile Beğeni Ölçümü
-face-api.js TinyFaceDetector ile:
-- Mutlu, nötr, şaşkın, beğenmedi — 4 duygu gerçek zamanlı ölçülür
-- Exponential moving average ile smooth sonuçlar
-- Verdict: **Bayıldın / Güzel Duruyor / Kararsızsın / Beğenmedin**
+### 😊 Emotion-Based Approval Rating
+Using face-api.js TinyFaceDetector:
+- Happy, neutral, surprised, disgusted — 4 emotions measured in real time
+- Smooth results via exponential moving average
+- Verdict: **Love It / Looks Good / Undecided / Didn't Like It**
 
-### ✨ AI Kombin Önerisi
-Dolaptaki kıyafetlerden Claude, seçilen etkinlik ve ruh haline göre:
-- Uyum skoru hesaplar
-- Renk harmonisi analiz eder
-- Styling ipuçları önerir
+### ✨ AI Outfit Suggestion
+Claude generates outfit combinations from your wardrobe based on occasion and mood:
+- Compatibility score calculated
+- Color harmony analyzed
+- Styling tips provided
 
 ---
 
-## Mimari
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -106,39 +106,39 @@ Dolaptaki kıyafetlerden Claude, seçilen etkinlik ve ruh haline göre:
 
 ### Tech Stack
 
-| Katman | Teknoloji | Kullanım |
-|--------|-----------|----------|
-| Frontend | Vanilla JS, HTML5, CSS3 | UI, AR canvas render |
-| Backend | Node.js 20, Express | API proxy, key güvenliği |
-| AI Analiz | Anthropic Claude Sonnet | Kıyafet vision analizi |
-| Kombin | Anthropic Claude Sonnet | Outfit generation |
-| AR | MediaPipe Pose | 33 landmark, body segmentation |
-| Duygu | face-api.js (vladmandic) | TinyFaceDetector + expressions |
+| Layer | Technology | Usage |
+|-------|-----------|-------|
+| Frontend | Vanilla JS, HTML5, CSS3 | UI, AR canvas rendering |
+| Backend | Node.js 20, Express | API proxy, key security |
+| AI Analysis | Anthropic Claude Sonnet | Clothing vision analysis |
+| Outfit Gen | Anthropic Claude Sonnet | AI outfit generation |
+| AR | MediaPipe Pose | 33 landmarks, body segmentation |
+| Emotion | face-api.js (vladmandic) | TinyFaceDetector + expressions |
 | BG Remove | remove.bg API | Professional background removal |
 | State | localStorage | Persistent wardrobe storage |
 
 ---
 
-## Proje Yapısı
+## Project Structure
 
 ```
 drape/
 ├── server/
 │   └── index.js              # Express backend
-│                             # API key'ler burada — kullanıcı görmez
+│                             # API keys live here — never exposed to client
 ├── public/
-│   ├── index.html            # Single page app
+│   ├── index.html            # Single page app entry point
 │   ├── lib/
-│   │   ├── arEngine.js       # MediaPipe Pose + Segmentation AR motoru
-│   │   ├── emotionEngine.js  # face-api.js duygu algılama
+│   │   ├── arEngine.js       # MediaPipe Pose + Segmentation AR engine
+│   │   ├── emotionEngine.js  # face-api.js emotion detection
 │   │   ├── bgRemove.js       # remove.bg API client
 │   │   ├── api.js            # Backend API calls
 │   │   └── state.js          # Global state + localStorage
 │   ├── components/
-│   │   ├── wardrobe.js       # Dijital dolap + upload flow
-│   │   ├── outfit.js         # AI kombin üretici
-│   │   ├── arPage.js         # AR deneme odası UI
-│   │   └── profile.js        # Kullanıcı profili
+│   │   ├── wardrobe.js       # Digital wardrobe + upload flow
+│   │   ├── outfit.js         # AI outfit generator
+│   │   ├── arPage.js         # AR try-on room UI
+│   │   └── profile.js        # User profile
 │   └── styles/
 │       ├── main.css          # Design system
 │       └── animations.css    # Keyframe animations
@@ -149,30 +149,30 @@ drape/
 
 ---
 
-## Kurulum
+## Setup
 
-### Gereksinimler
+### Requirements
 
 - Node.js 18+
 - Anthropic API Key → [console.anthropic.com](https://console.anthropic.com)
-- remove.bg API Key → [remove.bg/api](https://remove.bg/api) *(ücretsiz 50 görüntü/ay)*
+- remove.bg API Key → [remove.bg/api](https://remove.bg/api) *(free tier: 50 images/month)*
 
-### Adımlar
+### Installation
 
 ```bash
-# 1. Repoyu klonla
+# 1. Clone the repo
 git clone https://github.com/eliftb/drape.git
 cd drape
 
-# 2. Bağımlılıkları yükle
+# 2. Install dependencies
 npm install
 
-# 3. Environment variables
+# 3. Set up environment variables
 cp .env.example .env
 nano .env
 ```
 
-`.env` dosyasına ekle:
+Add to `.env`:
 ```env
 ANTHROPIC_API_KEY=sk-ant-...
 REMOVEBG_API_KEY=...
@@ -180,18 +180,18 @@ PORT=3000
 ```
 
 ```bash
-# 4. Başlat
+# 4. Start
 npm start
 ```
 
-**→ http://localhost:3000**
+**→ Open http://localhost:3000**
 
 ---
 
 ## API
 
 ### `POST /api/analyze`
-Claude Vision ile kıyafet analizi.
+Clothing analysis via Claude Vision.
 
 ```json
 // Request
@@ -202,12 +202,12 @@ Claude Vision ile kıyafet analizi.
   "success": true,
   "data": {
     "category": "top",
-    "categoryLabel": "Üst Giysi",
-    "name": "Oversize Siyah Tişört",
+    "categoryLabel": "Top",
+    "name": "Oversize Black T-Shirt",
     "colorTone": "dark",
     "primaryColors": ["#1a1a1a", "#2c2c2c"],
     "styleTags": ["Streetwear", "Minimalist"],
-    "season": ["4 Mevsim"],
+    "season": ["All Season"],
     "confidence": 0.97,
     "emoji": "👕"
   }
@@ -215,7 +215,7 @@ Claude Vision ile kıyafet analizi.
 ```
 
 ### `POST /api/removebg`
-remove.bg API ile arka plan kaldırma.
+Background removal via remove.bg API.
 
 ```json
 // Request
@@ -226,7 +226,7 @@ remove.bg API ile arka plan kaldırma.
 ```
 
 ### `POST /api/outfit`
-Claude ile AI kombin önerisi.
+AI outfit suggestion via Claude.
 
 ```json
 // Request
@@ -241,23 +241,23 @@ Claude ile AI kombin önerisi.
     "bottomId": "item_456",
     "compatibilityScore": 92,
     "colorHarmony": "monochrome",
-    "aiInsight": "Koyu tonların uyumu sofistike bir görünüm yaratıyor.",
-    "stylingTips": ["Beli içe koy", "Tek aksesuar ekle"]
+    "aiInsight": "Dark tones create a sophisticated, cohesive look.",
+    "stylingTips": ["Tuck in slightly", "Add a single accessory"]
   }
 }
 ```
 
 ---
 
-## Güvenlik
+## Security
 
-- API key'ler backend'de saklanır, frontend'e hiç geçmez
-- `.env` dosyası `.gitignore`'da, GitHub'a çıkmaz
-- Kullanıcı kimlik doğrulaması localStorage tabanlı
+- API keys are stored server-side only, never exposed to the frontend
+- `.env` file is in `.gitignore` — never pushed to GitHub
+- User authentication is localStorage-based
 
 ---
 
-## Lisans
+## License
 
 MIT © 2026 [eliftb](https://github.com/eliftb)
 
@@ -265,7 +265,7 @@ MIT © 2026 [eliftb](https://github.com/eliftb)
 
 <div align="center">
 
-**Eğer beğendiysen ⭐ atmayı unutma!**
+**If you like it, drop a ⭐**
 
 *Built with Claude, MediaPipe, and too much caffeine* ☕
 
