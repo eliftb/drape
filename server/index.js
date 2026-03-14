@@ -65,14 +65,16 @@ app.post('/api/removebg', async (req, res) => {
     const base64    = image.replace(/^data:image\/[a-z+]+;base64,/, '')
     const imgBuffer = Buffer.from(base64, 'base64')
 
-    const form = new FormData()
-    form.append('image_file', imgBuffer, { filename: 'image.jpg', contentType: 'image/jpeg' })
-    form.append('size', 'auto')
-
     const response = await fetch('https://api.remove.bg/v1.0/removebg', {
-      method:  'POST',
-      headers: { 'X-Api-Key': process.env.REMOVEBG_API_KEY, ...form.getHeaders() },
-      body:    form,
+      method: 'POST',
+      headers: {
+        'X-Api-Key': process.env.REMOVEBG_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        image_file_b64: base64,
+        size: 'auto',
+      }),
     })
 
     if (!response.ok) {
